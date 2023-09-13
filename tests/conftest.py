@@ -19,17 +19,38 @@ def setUp_flipkart(request):
     driver.quit()
 
 
-@pytest.fixture(scope='class')
+@pytest.fixture(params=["chrome", "firefox"], scope='class')
 def setUp_meta(request):
-    driver = Driver.get_driver('chrome')
-    driver.maximize_window()
-    driver.get("https://www.meta.com/portal/")
-    if request.cls is not None:
-        request.cls.driver = driver
-    yield driver
-    time.sleep(3)
-    driver.delete_all_cookies()
-    driver.quit()
+    if request.param == "chrome":
+        driver = Driver.get_driver('chrome')
+        driver.maximize_window()
+        driver.get("https://www.meta.com/portal/")
+        if request.cls is not None:
+            request.cls.driver = driver
+        yield driver
+        time.sleep(3)
+        driver.delete_all_cookies()
+        driver.quit()
+    if request.param == "firefox":
+        driver = Driver.get_driver('firefox')
+        driver.get("https://www.meta.com/portal/")
+        if request.cls is not None:
+            request.cls.driver = driver
+        yield driver
+        time.sleep(3)
+        driver.delete_all_cookies()
+        driver.quit()
+# @pytest.fixture(scope='class')
+# def setUp_meta(request):
+#     driver = Driver.get_driver('firefox')
+#     driver.maximize_window()
+#     driver.get("https://www.meta.com/portal/")
+#     if request.cls is not None:
+#         request.cls.driver = driver
+#     yield driver
+#     time.sleep(3)
+#     driver.delete_all_cookies()
+#     driver.quit()
 
 
 @pytest.fixture(params=['chrome', 'firefox'], scope='class')

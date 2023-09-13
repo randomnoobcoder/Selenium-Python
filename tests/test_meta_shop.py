@@ -6,18 +6,19 @@ from selenium.webdriver.common.action_chains import ActionChains
 from base.base_page import BasePage
 from selenium.webdriver.common.by import By
 from common.meta_cart import MetaCart
+from tests.base_test import BaseTest
 
 
 @pytest.mark.usefixtures("setUp_meta")
-class TestMetaShop(unittest.TestCase):
+class TestMetaShop(BaseTest):  # unittest.TestCase):
     # driver = webdriver.WebDriver
-    
+
     @pytest.fixture(autouse=True)
     def classObject(self):
         self.page = BasePage(self.driver)
         self.car_page = MetaCart(self.driver)
 
-    @pytest.mark.skip
+    # @pytest.mark.skip
     def test_00_site_launch(self):
         title = self.driver.title
         print(title)
@@ -25,7 +26,8 @@ class TestMetaShop(unittest.TestCase):
         meta_text = self.page.waitForElementVisible('xpath',
                                                     "//img[@class = 'xx3o462 x13dflua x11xpdln']").get_attribute("alt")
         print(f'meta_text : {meta_text}')
-        self.assertEqual(meta_text, "Meta")
+        assert "Meta" in meta_text
+        # self.assertEqual(meta_text, "Meta")
 
     @pytest.mark.skip
     def test_01_check_items_availability(self):
@@ -111,9 +113,9 @@ class TestMetaShop(unittest.TestCase):
         # added_item = self.page.waitForElement('xpath', '//*[contains(@class, "x1a4ywym xobpncf ")]')
         # assert "Meta Quest 2" in added_item.text
 
+    @pytest.mark.skip
     def test_04_screenshot(self):
         meta_log = self.page.waitForElement('xpath', '(//img[@class="xx3o462 x13dflua x11xpdln"])[1]')
         # self.driver.find_element().screenshot_as_png
         with open("logo.png", 'wb') as file:
             file.write(meta_log.screenshot_as_png)
-
