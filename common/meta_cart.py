@@ -20,9 +20,9 @@ class MetaCart:
         else:
             buy_now_1 = self.page.waitForElement('xpath', '(//*[@role="button"])[11]')
         print('Moving to BUY NOW button')
-        self.page.actions.move_to_element(buy_now_1).perform()  # moving to BUY NOW button
-        # self.driver.execute_script("arguments[0].scrollIntoView();", buy_now_1)
-        print('Moved to BUY NOW button and clicking')
+        # self.page.actions.move_to_element(buy_now_1).perform()  # moving to BUY NOW button
+        self.driver.execute_script("arguments[0].scrollIntoView();", buy_now_1)
+        `print('Moved to BUY NOW button and clicking')
         print(f'Waiting 3 sec .....')
         time.sleep(3)
         buy_now_1.click()

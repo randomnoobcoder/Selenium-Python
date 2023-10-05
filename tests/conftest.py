@@ -53,12 +53,34 @@ def setUp_meta(request):
 #     driver.quit()
 
 
-@pytest.fixture(params=['chrome', 'firefox'], scope='class')
-def init_driver(request):
-    if request.params == 'chrome':
-        web_driver = webdriver.ChromeService(
-            executable_path=os.path.join(os.getcwd(), os.path.abspath("../browsers/chromedriver/chromedriver.exe")))
-    if request.params == 'firefox':
-        web_driver = webdriver.ChromeService(
-            executable_path=os.path.join(os.getcwd(), os.path.abspath('../browsers/geckodriver/geckodriver.exe')))
-    request.cls.driver = web_driver
+# @pytest.fixture(params=['chrome', 'firefox'], scope='class')
+# def init_driver(request):
+#     if request.params == 'chrome':
+#         web_driver = webdriver.ChromeService(
+#             executable_path=os.path.join(os.getcwd(), os.path.abspath("../browsers/chromedriver/chromedriver.exe")))
+#     if request.params == 'firefox':
+#         web_driver = webdriver.ChromeService(
+#             executable_path=os.path.join(os.getcwd(), os.path.abspath('../browsers/geckodriver/geckodriver.exe')))
+#     request.cls.driver = web_driver
+
+@pytest.fixture(params=["chrome"], scope='class')
+def setUp_amazon(request):
+    if request.param == "chrome":
+        driver = Driver.get_driver('chrome')
+        driver.maximize_window()
+        driver.get("https://www.amazon.in/")
+        if request.cls is not None:
+            request.cls.driver = driver
+        yield driver
+        time.sleep(3)
+        driver.delete_all_cookies()
+        driver.quit()
+    if request.param == "firefox":
+        driver = Driver.get_driver('firefox')
+        driver.get("https://www.amazon.in/")
+        if request.cls is not None:
+            request.cls.driver = driver
+        yield driver
+        time.sleep(3)
+        driver.delete_all_cookies()
+        driver.quit()

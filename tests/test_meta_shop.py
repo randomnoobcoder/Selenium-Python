@@ -6,11 +6,11 @@ from selenium.webdriver.common.action_chains import ActionChains
 from base.base_page import BasePage
 from selenium.webdriver.common.by import By
 from common.meta_cart import MetaCart
-from tests.base_test import BaseTest
+from tests.base_test import BaseTestMeta
 
 
-@pytest.mark.usefixtures("setUp_meta")
-class TestMetaShop(BaseTest):  # unittest.TestCase):
+# @pytest.mark.usefixtures("setUp_meta")
+class TestMetaShop(BaseTestMeta):  # unittest.TestCase):
     # driver = webdriver.WebDriver
 
     @pytest.fixture(autouse=True)
@@ -38,7 +38,8 @@ class TestMetaShop(BaseTest):  # unittest.TestCase):
         availability_text = self.page.waitForElement('xpath',
                                                      '//*[@id="explore"]/div[2]/div/div[4]/div/div/div[1]/div/div[3]/div[1]/div/div/div/span')
         print(availability_text.text)
-        self.assertEqual(availability_text.text, 'Not available')
+        assert availability_text.text == "Not available"
+        # self.assertEqual(availability_text.text, 'Not available')
 
     @pytest.mark.skip
     def test_02_open_new_window(self):
@@ -57,7 +58,8 @@ class TestMetaShop(BaseTest):  # unittest.TestCase):
         self.driver.implicitly_wait(5)
         print(f'Second Window Title: {self.driver.title}')
         yt_channel = self.page.waitForElement('class', "ytd-channel-name")
-        self.assertEqual(yt_channel.text, "Meta")
+        assert yt_channel.text == "Meta"
+        # self.assertEqual(yt_channel.text, "Meta")
         # Switching back to Meta windows
         self.driver.switch_to.window(windows[0])
         assert 'Meta Store' in self.driver.title
@@ -75,7 +77,8 @@ class TestMetaShop(BaseTest):  # unittest.TestCase):
 
         total_price_calculated = self.car_page.calc_total_product_price()
         total_price_displayed = self.car_page.total_price_displayed()
-        self.assertEqual(total_price_calculated, total_price_displayed)
+        assert total_price_calculated == total_price_displayed
+        # self.assertEqual(total_price_calculated, total_price_displayed)
 
         # actions = ActionChains(self.driver)
         # product_list = self.page.waitForElement('xpath', '//*[text()="Meta Quest"]')
@@ -115,7 +118,7 @@ class TestMetaShop(BaseTest):  # unittest.TestCase):
 
     @pytest.mark.skip
     def test_04_screenshot(self):
-        meta_log = self.page.waitForElement('xpath', '(//img[@class="xx3o462 x13dflua x11xpdln"])[1]')
+        meta_logo = self.page.waitForElement('xpath', '(//img[@class="xx3o462 x13dflua x11xpdln"])[1]')
         # self.driver.find_element().screenshot_as_png
         with open("logo.png", 'wb') as file:
-            file.write(meta_log.screenshot_as_png)
+            file.write(meta_logo.screenshot_as_png)
